@@ -2,6 +2,7 @@ package org.sourcebrew.surveys.surveygroup;
 
 import android.content.Context;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -40,9 +41,9 @@ public class ChoiceLayout extends FlowLayout {
                     | InputType.TYPE_DATETIME_VARIATION_DATE;
             case "time": return InputType.TYPE_CLASS_DATETIME
                     |InputType.TYPE_DATETIME_VARIATION_TIME;
-            case "email": return InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
+            case "email": return InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
             case "auto_complete": return InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE;
-            case "password": return InputType.TYPE_TEXT_VARIATION_PASSWORD;
+            case "password": return InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
             case "int":case "integer":case "number": return InputType.TYPE_CLASS_NUMBER;
             default: return InputType.TYPE_CLASS_TEXT;
         }
@@ -117,13 +118,14 @@ public class ChoiceLayout extends FlowLayout {
 
     protected final LinearLayout getNewChoiceGroup() {
         int p = (int)(getResources().getDisplayMetrics().density * 8);
-
+        int hp = p/2;
         LinearLayout container = new LinearLayout(getContext());
+
         container.setLayoutParams(DEFAULT_PARAMS_FOR_CHILD_VIEWS);
         container.setOrientation(LinearLayout.VERTICAL);
         container.setGravity(Gravity.LEFT | Gravity.TOP);
-        container.setPadding(p, 0, p, 0);
-        container.setBackgroundColor(0xFFf4f4f8);
+        container.setPadding(p, hp, p, 0);
+        container.setBackgroundColor(0xFFfafafc);
         addView(container);
 
         return container;
@@ -148,10 +150,10 @@ public class ChoiceLayout extends FlowLayout {
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
-            int p = (int)(getResources().getDisplayMetrics().density * 8);
+            //int p = (int)(getResources().getDisplayMetrics().density * 8);
 
             ll.weight = 1;
-            ll.setMargins(0, p/2, 0, p);
+            ll.setMargins(0, 0, 0, 0);
 
             LinearLayout container = new LinearLayout(getContext());
             returnView = container;
@@ -163,13 +165,13 @@ public class ChoiceLayout extends FlowLayout {
             container.addView(button);
             container.addView(editText);
             editText.setEnabled(false);
-            editText.setFocusable(false);
             editText.setInputType(InputType.TYPE_CLASS_TEXT | inputTypeMask(input_type));
-
             button.setTag(R.string.CHOICE_FOR_VIEW, editText);
         } else {
             button.setText(value);
         }
+        button.setTag(R.string.CHOICE_ON_SELECT_TOGGLE, getValue(group, "on_select_toggle"));
+        Log.e("TAG", getValue(group, "on_select_toggle"));
 
         getToggleAssistant().addCompundButton(button);
 

@@ -8,7 +8,7 @@
         {
           "columns":"1",
           "key":"Q.0",
-          "title":"When were you born?",
+          "title":"How likely is it that you would recommend this company to a friend or colleague?",
           "choices": [
             {
               "key":"C.0.1",
@@ -32,24 +32,50 @@
             }
           ]
         },
-
         {
           "key":"Q.1",
-          "title":"How likely is it that you would recommend this company to a friend or colleague?",
+          "title":"Select a date from the picker?",
           "choices": [
             {
               "key":"C.1.1",
               "type":"text",
               "value":"",
-              "input_type":"date"
+              "input_type":"date_picker"
             }
           ]
 
         },
         {
           "key":"Q.2",
+          "title":"When were you born?",
+          "choices": [
+            {
+              "key":"C.1.1",
+              "type":"text",
+              "value":"",
+              "input_type":"date",
+              "default_value":"2000/01/01"
+            }
+          ]
+
+        },
+        {
+          "key":"Q.3",
+          "title":"What time did that thing happen?",
+          "choices": [
+            {
+              "key":"C.1.1",
+              "type":"text",
+              "value":"",
+              "input_type":"time_picker"
+            }
+          ]
+
+        },
+        {
+          "key":"Q.4",
           "title":"Overall, how satisfied or dissatisfied are you with our company?",
-          "columns":"1",
+
           "choices": [
             {
               "groups": [
@@ -64,6 +90,67 @@
                   { "key":"C.2.6", "type":"radio", "value":"other", "input_type":"auto_complete"}
                 ]
               ]
+            }
+          ]
+        },
+        {
+          "key":"Q.5",
+          "title":"Which of the following words would you use to describe our products? Select all that apply.",
+          "columns":2,
+          "choices": [
+            {
+              "groups": [
+                [
+                  { "key":"C.5.1a", "type":"checkbox", "value":"Reliable", "on_select_toggle":"C.5.1b"},
+                  { "key":"C.5.2a", "type":"checkbox", "value":"High quality", "on_select_toggle":"C.5.2b"},
+                  { "key":"C.5.3a", "type":"checkbox", "value":"Useful", "on_select_toggle":"C.5.3b"},
+                  { "key":"C.5.4a", "type":"checkbox", "value":"Unique", "on_select_toggle":"C.5.4b"},
+                  { "key":"C.5.5a", "type":"checkbox", "value":"Good value for the money", "on_select_toggle":"C.5.5b"}
+                ],
+                [
+                  { "key":"C.5.1b", "type":"checkbox", "value":"Uneliable", "on_select_toggle":"C.5.1a"},
+                  { "key":"C.5.2b", "type":"checkbox", "value":"Low quality", "on_select_toggle":"C.5.2a"},
+                  { "key":"C.5.3b", "type":"checkbox", "value":"Not useful", "on_select_toggle":"C.5.3a"},
+                  { "key":"C.5.4b", "type":"checkbox", "value":"Common", "on_select_toggle":"C.5.4a"},
+                  { "key":"C.5.5b", "type":"checkbox", "value":"Bad value for the money", "on_select_toggle":"C.5.5a"}
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "key":"Q.5",
+          "title":"Password field",
+          "choices": [
+            {
+              "key":"C.1.1",
+              "type":"text",
+              "value":"",
+              "input_type":"password"
+            }
+          ]
+        },
+        {
+          "key":"Q.6",
+          "title":"email field",
+          "choices": [
+            {
+              "key":"C.1.1",
+              "type":"text",
+              "value":"",
+              "input_type":"email"
+            }
+          ]
+        },
+        {
+          "key":"Q.7",
+          "title":"number field",
+          "choices": [
+            {
+              "key":"C.1.1",
+              "type":"text",
+              "value":"",
+              "input_type":"number"
             }
           ]
         }

@@ -141,23 +141,15 @@ public class QuestionsLayout extends ChoiceLayout {
         View view = null;
 
         switch(input_type) {
-            case "date":
+            case "date_picker":
                 view = getDateButton();
                 break;
-            case "time":
+            case "time_picker":
                 view = getTimeButton();
                 break;
-            case "phone":
-            case "email":
-            case "auto_complete":
-            case "password":
-            case "int":
-                case "integer":
-                case "number":
-
             default:
                 EditText b = new EditText(getContext());
-                b.setText("SELECT TIME");
+                b.setText(getValue(group, "default_value"));
                 b.setLayoutParams(
                         new LayoutParams(
                                 LayoutParams.MATCH_PARENT,
@@ -165,7 +157,7 @@ public class QuestionsLayout extends ChoiceLayout {
                         )
 
                 );
-
+                b.setInputType(inputTypeMask(input_type));
                 view = b;
             break;
         }

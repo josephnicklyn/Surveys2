@@ -5,6 +5,7 @@
 
     <string name="CHOICE_KEY">key</string>
     <string name="CHOICE_FOR_VIEW">view</string>
+    <string name="CHOICE_ON_SELECT_TOGGLE">on_select_toggle</string>
 
 
 </resources>

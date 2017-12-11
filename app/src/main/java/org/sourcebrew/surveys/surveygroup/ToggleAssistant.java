@@ -38,17 +38,36 @@ public class ToggleAssistant {
     private CompoundButton.OnCheckedChangeListener checkStateListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked && buttonView instanceof RadioButton) {
-                for(CompoundButton rb: viewList) {
-                    if (rb == buttonView || !(rb instanceof RadioButton))
-                        continue;
-                    rb.setChecked(false);
+            if (isChecked) {
+                if (buttonView instanceof RadioButton) {
+                    for (CompoundButton rb : viewList) {
+                        if (rb == buttonView || !(rb instanceof RadioButton))
+                            continue;
+                        rb.setChecked(false);
+                    }
+                } else {
+                    if (buttonView.getTag(R.string.CHOICE_ON_SELECT_TOGGLE) != null) {
+                        String onToggleA = (String)buttonView.getTag(R.string.CHOICE_ON_SELECT_TOGGLE);
+                        Log.e("TOGGLE_SELECT", onToggleA);
+                        for (CompoundButton rb : viewList) {
+                            if (rb == buttonView)
+                                continue;
+                            if (rb.getTag(R.string.CHOICE_KEY) != null) {
+                                String onToggleB = (String) rb.getTag(R.string.CHOICE_KEY);
+                                if (onToggleA.equalsIgnoreCase(onToggleB))
+                                    rb.setChecked(false);
+                            }
+
+                        }
+
+                    }
                 }
             }
 
             if (buttonView.getTag(R.string.CHOICE_FOR_VIEW) != null) {
                 View forOption = (View) buttonView.getTag(R.string.CHOICE_FOR_VIEW);
                 forOption.setEnabled(isChecked);
+                forOption.requestFocus();
             }
 
         }
