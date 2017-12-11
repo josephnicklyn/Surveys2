@@ -1,0 +1,76 @@
+{
+
+  "surveys": [
+    {
+      "title":"Customer Satisfaction Survey Template",
+      "description":"NO DESCRIPTION PROVIDED",
+      "questions": [
+        {
+          "columns":"1",
+          "key":"Q.0",
+          "title":"When were you born?",
+          "choices": [
+            {
+              "key":"C.0.1",
+              "type":"range_select",
+              "value":"United States",
+              "title_left":"ON THE LEFT",
+              "title_right":"ON THE RIGHT",
+              "values":[
+                {"value":"0"},
+                {"value":"1"},
+                {"value":"2"},
+                {"value":"3"},
+                {"value":"4"},
+                {"value":"5"},
+                {"value":"6"},
+                {"value":"7"},
+                {"value":"8"},
+                {"value":"9"},
+                {"value":"10"}
+              ]
+            }
+          ]
+        },
+
+        {
+          "key":"Q.1",
+          "title":"How likely is it that you would recommend this company to a friend or colleague?",
+          "choices": [
+            {
+              "key":"C.1.1",
+              "type":"text",
+              "value":"",
+              "input_type":"date"
+            }
+          ]
+
+        },
+        {
+          "key":"Q.2",
+          "title":"Overall, how satisfied or dissatisfied are you with our company?",
+          "columns":"1",
+          "choices": [
+            {
+              "groups": [
+                [
+                  { "key":"C.2.1", "type":"radio", "value":"Very satisfied"},
+                  { "key":"C.2.2", "type":"radio", "value":"Somewhat satisfied"},
+                  { "key":"C.2.3", "type":"radio", "value":"Neither satisfied nor disatisfied"}
+                ],
+                [
+                  { "key":"C.2.4", "type":"radio", "value":"Somewhat dissatisfied"},
+                  { "key":"C.2.5", "type":"radio", "value":"very dissatisfied"},
+                  { "key":"C.2.6", "type":"radio", "value":"other", "input_type":"auto_complete"}
+                ]
+              ]
+            }
+          ]
+        }
+
+      ]
+    }
+
+  ]
+
+}

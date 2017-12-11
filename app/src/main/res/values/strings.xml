@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Surveys</string>
+    <string name="WAS_WRAP_CONTENT">WAS_WRAP_CONTENT</string>
+    <string name="EDIT_VIEW_FOR_OPTION">WAS_WRAP_CONTENT</string>
+
+    <string name="CHOICE_KEY">key</string>
+    <string name="CHOICE_FOR_VIEW">view</string>
+
+
+</resources>
