@@ -1,4 +1,4 @@
-package org.sourcebrew.surveys.surveygroup;
+package org.sourcebrew.surveys.surveygroup.widgets;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -19,6 +19,14 @@ public class RangeSelect extends LinearLayout {
 
     TextView range_select_left, range_select_right;
     LinearLayout range_select_container;
+
+    String selectedValue = null;
+
+    public interface RangeSelectInterface {
+        public void itemSelected(String oldValue, String newValue);
+    }
+
+    private RangeSelectInterface rangeSelectInterface;
 
     public RangeSelect(Context context, JSONObject jsonObject) {
         super(context);
@@ -61,7 +69,7 @@ public class RangeSelect extends LinearLayout {
         int p = (int)(getResources().getDisplayMetrics().density * 4);
         t.setLayoutParams(ll);
         t.setBackgroundResource(R.drawable.border_for_view);
-        t.setPadding(p, p, p, p);
+        t.setPadding(p, p+p, p, p+p);
         range_select_container.addView(t);
         t.setClickable(true);
         t.setOnClickListener(onClicked);
@@ -74,7 +82,14 @@ public class RangeSelect extends LinearLayout {
         public void onClick(View v) {
             if (previousSelect != null)
                 previousSelect.setBackgroundResource(R.drawable.border_for_view);
-            v.setBackgroundResource(R.drawable.border_for_view_selected);
+            if (v != previousSelect) {
+                v.setBackgroundResource(R.drawable.border_for_view_selected);
+                String value = selectedValue;
+                selectedValue = ((TextView) v).getText().toString();
+                if (rangeSelectInterface != null) {
+                    rangeSelectInterface.itemSelected(value, selectedValue);
+                }
+            }
             previousSelect = v;
         }
     };
@@ -85,6 +100,14 @@ public class RangeSelect extends LinearLayout {
 
     public void setRightText(String value) {
         range_select_right.setText(value);
+    }
+
+    public String getSelectedValue() {
+        return selectedValue;
+    }
+
+    public void setOnRangeSelectChange(RangeSelectInterface listener) {
+        rangeSelectInterface = listener;
     }
 
 }

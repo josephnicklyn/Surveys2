@@ -1,56 +1,20 @@
-package org.sourcebrew.surveys.surveygroup;
+package org.sourcebrew.surveys.surveygroup.widgets;
 
 import android.content.Context;
-import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.sourcebrew.surveys.R;
+import org.sourcebrew.surveys.surveygroup.widgets.FlowLayout;
 
 /**
  * Created by John on 12/9/2017.
  */
 
 public class ChoiceLayout extends FlowLayout {
-
-    private ToggleAssistant toggleAssistant;
-
-    public ToggleAssistant getToggleAssistant() {
-        if (toggleAssistant == null)
-            toggleAssistant = new ToggleAssistant(getContext());
-        return toggleAssistant;
-    }
-
-    public static int inputTypeMask(String value) {
-
-        value = value.toLowerCase();
-
-        switch(value) {
-            case "phone": return InputType.TYPE_CLASS_PHONE;
-            case "date": return InputType.TYPE_CLASS_DATETIME
-                    | InputType.TYPE_DATETIME_VARIATION_DATE;
-            case "time": return InputType.TYPE_CLASS_DATETIME
-                    |InputType.TYPE_DATETIME_VARIATION_TIME;
-            case "email": return InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
-            case "auto_complete": return InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE;
-            case "password": return InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
-            case "int":case "integer":case "number": return InputType.TYPE_CLASS_NUMBER;
-            default: return InputType.TYPE_CLASS_TEXT;
-        }
-    }
-
-
-
 
     public static int getInteger(JSONObject json, String key, int defaultValue) {
 
@@ -107,14 +71,11 @@ public class ChoiceLayout extends FlowLayout {
 
     public ChoiceLayout(Context context) {
         super(context);
-
         setLayoutParams(new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.MATCH_PARENT
         ));
-
     }
-
 
     protected final LinearLayout getNewChoiceGroup() {
         int p = (int)(getResources().getDisplayMetrics().density * 8);
@@ -131,16 +92,16 @@ public class ChoiceLayout extends FlowLayout {
         return container;
     }
 
+    /*
     public void buildFromJSON(JSONObject object) throws Exception {}
 
-    View getOptionButton(JSONObject group, boolean pill) {
+    View[] getOptionButton(JSONObject group, boolean pill) {
         String key = getValue(group, "key");
         String value = getValue(group, "value");
         String input_type = getValue(group, "input_type");
 
         CompoundButton button = (pill?new RadioButton(getContext()):new CheckBox(getContext()));
         View returnView = button;
-
         button.setTag(R.string.CHOICE_KEY, key);
 
         if (!input_type.isEmpty()) {
@@ -155,27 +116,49 @@ public class ChoiceLayout extends FlowLayout {
             ll.weight = 1;
             ll.setMargins(0, 0, 0, 0);
 
-            LinearLayout container = new LinearLayout(getContext());
+            final LinearLayout container = new LinearLayout(getContext());
             returnView = container;
 
-            EditText editText = new EditText(getContext());
+            final EditText editText = new EditText(getContext());
             editText.setHint(value);
             container.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             editText.setLayoutParams(ll);
             container.addView(button);
             container.addView(editText);
             editText.setEnabled(false);
+            editText.setTag(R.string.CHOICE_FOR_VIEW, button);
             editText.setInputType(InputType.TYPE_CLASS_TEXT | inputTypeMask(input_type));
             button.setTag(R.string.CHOICE_FOR_VIEW, editText);
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    CompoundButton b = (CompoundButton)editText.getTag(R.string.CHOICE_FOR_VIEW);
+                    if (b!=null && b.getTag(R.string.CHOICE_VALUE_CHANGED_LISTENER) != null) {
+                        QuestionItemValueChangeInterface qi = (QuestionItemValueChangeInterface) b.getTag(R.string.CHOICE_VALUE_CHANGED_LISTENER);
+                        //qi.OnQuestionItemValueChanged(b, s.toString(), b.isChecked() );
+
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
         } else {
             button.setText(value);
         }
         button.setTag(R.string.CHOICE_ON_SELECT_TOGGLE, getValue(group, "on_select_toggle"));
-        Log.e("TAG", getValue(group, "on_select_toggle"));
 
         getToggleAssistant().addCompundButton(button);
 
-        return returnView;
+        return new View[]{button, returnView };
     }
-
+*/
 }

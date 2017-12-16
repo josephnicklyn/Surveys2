@@ -31,23 +31,18 @@ public class SurveySource {
         return instance;
     }
 
-    private SurveySource() {
-
-    }
+    private SurveySource() { }
 
     public void useExampleSurvey(Context context) {
         JSONObject jsonObject = null;
         InputStream in = context.getResources().openRawResource(R.raw.survey);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-
-
             StringBuilder b = new StringBuilder();
             String str = "";
             while ((str=reader.readLine()) != null) {
                 b.append(str);
             }
             jsonObject = new JSONObject(b.toString());
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -55,7 +50,6 @@ public class SurveySource {
         }
         json = jsonObject;
     }
-
 
     @Override
     public String toString() {
@@ -69,7 +63,6 @@ public class SurveySource {
             return "NULL";
         }
     }
-
 
     public JSONObject getJSON() {
         return json;

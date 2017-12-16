@@ -3,9 +3,7 @@ package org.sourcebrew.surveys;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.sourcebrew.surveys.surveygroup.FlowLayout;
 import org.sourcebrew.surveys.surveygroup.SurveySource;
 import org.sourcebrew.surveys.surveygroup.SurveyViewBuilder;
 

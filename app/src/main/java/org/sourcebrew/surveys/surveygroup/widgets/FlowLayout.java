@@ -1,8 +1,7 @@
-package org.sourcebrew.surveys.surveygroup;
+package org.sourcebrew.surveys.surveygroup.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,37 @@ import android.view.WindowManager;
 import org.sourcebrew.surveys.R;
 
 /**
+ * <p>
+ * A <code>FlowLayout</code> is a layout which allows children to wrap to a new row, all children
+ * are of equal width; depending on the number of columns desired, with a minimum width of a
+ * column (250dp).  If the columns are limited to 1 either by using the <code>setMaxColumns</code>
+ * method or because the width is too small to contain 2 columns; the FlowLayout acts much like a
+ * <code>LinearLayout</code> with its orientation set to vertical.
+ * A <code>FlowLayout</code> provides automatic layout adjustments based on the width of the device.
+ * </p>
+ *
  * Created by John on 12/9/2017.
  */
 
 public class FlowLayout extends ViewGroup {
 
-    int nominalColumnWidth = 270;
-    int columnWidth;
-    int hGap, vGap;
+    /**
+     * The desired minimum width of a column, it is set at an arbitrary number which seems to
+     * work well for 2 columns on 5" screens when orientation is in landscape
+     */
+
+    protected int nominalColumnWidth = 250;
+
+    /**
+     * The column width set with display metrics density
+     */
+    protected int columnWidth;
+
+    /**
+     * Vertical and Horizontal gaps between rows and columns, generally under utilized
+     */
+    protected int hGap, vGap;
+
 
 
     public FlowLayout(Context context) {
@@ -52,8 +74,6 @@ public class FlowLayout extends ViewGroup {
 
         int count = getChildCount();
 
-
-        //get the available size of child view
         final int left = this.getPaddingLeft();
         final int top = this.getPaddingTop();
 
@@ -106,12 +126,12 @@ public class FlowLayout extends ViewGroup {
 
         int actualColumnWidth = (width+(columns >1?hGap:0))/columns;
         int viewWidth = actualColumnWidth - (columns >1?hGap:0);
-        int xWidth = actualColumnWidth;
+        //int xWidth = actualColumnWidth;
         int mostY = 0, childState = 0, rowHeight = 0, onCol = 0;
         int x = getPaddingLeft(), y = getPaddingTop();
         int vW = 0, vH = 0;
 
-        boolean doWrap = false;//(getChildCount() <= columns);
+        boolean doWrap = false;
 
         boolean flaggedForAdd = false;
 
@@ -128,7 +148,7 @@ public class FlowLayout extends ViewGroup {
                 measureChild(child, widthMeasureSpec, heightMeasureSpec);
                 vW = child.getMeasuredWidth();
                 vH = child.getMeasuredHeight();
-                xWidth = (doWrap?vW+hGap:actualColumnWidth);
+                actualColumnWidth = (doWrap?vW+hGap:actualColumnWidth);
             } else {
                 child.getLayoutParams().width = doWrap?LayoutParams.WRAP_CONTENT:viewWidth;
                 if (!doWrap)
@@ -138,7 +158,7 @@ public class FlowLayout extends ViewGroup {
 
                 vW = child.getMeasuredWidth();
                 vH = child.getMeasuredHeight();
-                xWidth = (doWrap?vW+hGap:actualColumnWidth);
+                actualColumnWidth = (doWrap?vW+hGap:actualColumnWidth);
             }
 
 
@@ -156,7 +176,7 @@ public class FlowLayout extends ViewGroup {
                 mostY = y;
                 flaggedForAdd = false;
             } else {
-                x+=xWidth;
+                x+=actualColumnWidth;
                 flaggedForAdd = true;
             }
 

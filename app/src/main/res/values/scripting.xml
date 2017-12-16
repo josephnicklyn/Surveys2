@@ -2,8 +2,8 @@
 
 <resources>
 
-    <dimen name="sq_title_padding">2dp</dimen>
-    <dimen name="sq_title_text_size">20dp</dimen>
+    <dimen name="sq_title_padding">4dp</dimen>
+    <dimen name="sq_title_text_size">24dp</dimen>
     <color name="sq_title_text_color">#00a898</color>
 
 </resources>

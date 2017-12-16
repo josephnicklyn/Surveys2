@@ -6,6 +6,14 @@
     <string name="CHOICE_KEY">key</string>
     <string name="CHOICE_FOR_VIEW">view</string>
     <string name="CHOICE_ON_SELECT_TOGGLE">on_select_toggle</string>
+    <string name="CHOICE_JSON_OBJECT">json_object</string>
+    <string name="CHOICE_VALUE_CHANGED_LISTENER">value_changed</string>
+    <string name="CHOICE_STRING_VALUE">string_value</string>
 
+    <string name="DEFAULT_BACKGROUND">default_background</string>
+
+    <string name="SURVEY_FIELD_ID">id</string>
+    <string name="SURVEY_FIELD_TITLE">title</string>
+    <string name="SURVEY_FIELD_HINT">hint</string>
 
 </resources>

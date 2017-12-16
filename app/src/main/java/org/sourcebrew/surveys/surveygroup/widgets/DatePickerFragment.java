@@ -1,13 +1,12 @@
-package org.sourcebrew.surveys.surveygroup;
+package org.sourcebrew.surveys.surveygroup.widgets;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
+
+import org.sourcebrew.surveys.surveygroup.SimpleMessageInterface;
 
 import java.util.Calendar;
 /**
@@ -15,6 +14,17 @@ import java.util.Calendar;
  */
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    SimpleMessageInterface mSimpleMessageInterface;
+
+    public DatePickerFragment() {
+        super();
+    }
+
+    public DatePickerFragment setOnCallback(SimpleMessageInterface listener) {
+        mSimpleMessageInterface = listener;
+        return  this;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,6 +41,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+        if (mSimpleMessageInterface != null) {
+            mSimpleMessageInterface.OnSimpleMessage(String.format("%04d/%02d/%02d", year, month, dayOfMonth));
+        }
     }
 }

@@ -1,33 +1,43 @@
 package org.sourcebrew.surveys.surveygroup;
 
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.Context;
-import android.text.InputType;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.sourcebrew.surveys.R;
+import org.sourcebrew.surveys.surveygroup.surveyresponce.ResponseUpdateInterface;
+import org.sourcebrew.surveys.surveygroup.surveyresponce.SurveyResponce;
+import org.sourcebrew.surveys.surveygroup.surveyresponce.SurveyResponceChangeInterface;
+import org.sourcebrew.surveys.surveygroup.surveyresponce.SurveyResponseRoot;
+import org.sourcebrew.surveys.surveygroup.widgets.ChoiceLayout;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by John on 12/11/2017.
  */
 
-public class QuestionsLayout extends ChoiceLayout {
+public class QuestionsLayout extends ChoiceLayout implements SurveyResponceChangeInterface, Iterable<SurveyResponseRoot> {
 
-    public QuestionsLayout(SurveyQuestionView target, JSONObject jsonObject) {
+    private ResponseUpdateInterface responseUpdateInterface;
+    final JSONObject sourceObject;
+    private final SurveyQuestionView surveyQuestionView;
+    final ArrayList<SurveyResponseRoot> members = new ArrayList<>();
+
+
+
+    public QuestionsLayout(
+            ResponseUpdateInterface ref,
+            SurveyQuestionView target,
+            JSONObject jsonObject) {
+
         super(target.getContext());
-
+        surveyQuestionView = target;
+        //if (ResponseUpdateInterface.class.isAssignableFrom(target.getClass())) {
+            responseUpdateInterface = ref;
+        //}
+        sourceObject = jsonObject;
         JSONArray choices = getArray(jsonObject, "choices");
         setMaxColumns(getInteger(jsonObject, "columns", -1));
 
@@ -43,21 +53,15 @@ public class QuestionsLayout extends ChoiceLayout {
                 pushGroups(groups);
             else {
                 JSONObject obj = getObject(choices, i);
-                Log.e("WIDGETS", "obj = " + obj);
                 addWidget(this, obj);
             }
-
         }
-
-        //
-
     }
 
     private boolean pushGroups(JSONArray groups) {
 
         if (groups == null)
             return false;
-
 
         for(int i = 0; i < groups.length(); i++) {
             JSONArray group = getArray(groups, i);
@@ -71,7 +75,6 @@ public class QuestionsLayout extends ChoiceLayout {
                 JSONObject obj = getObject(group, g);
                 if (obj == null)
                     continue;
-                Log.e("WIDGETS", "type = " + obj);
                 if (layoutTarget == null)
                     layoutTarget = getNewChoiceGroup();
 
@@ -80,165 +83,70 @@ public class QuestionsLayout extends ChoiceLayout {
 
         }
 
-
         return true;
     }
 
     private void addWidget(ViewGroup layoutTarget, JSONObject group) {
-
         if (layoutTarget == null || group == null)
             return;
 
         String type = getValue(group, "type");
 
-        Log.e("WIDGETS", "type = " + type);
-
-        switch (type.toLowerCase()) {
-            case "radio":
-                layoutTarget.addView(getOptionButton(group, true));
-                break;
-            case "checkbox":
-                layoutTarget.addView(getOptionButton(group, false));
-                break;
-            case "text":
-
-                addTextWidget(layoutTarget, group);
-
-                break;
-            case "range_select":
-                layoutTarget.addView(new RangeSelect(getContext(), group));
-                break;
+        try {
+            SurveyResponseRoot responceObject =
+                    SurveyResponseRoot.surveyResponseFromJSON(
+                            getContext(),
+                            group);
+            responceObject.setQuestionItemValueChangeInterface(this);
+            layoutTarget.addView(responceObject);
+            members.add(responceObject);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
-    private void addTextWidget(ViewGroup layoutTarget, JSONObject group) {
-
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        LayoutInflater inflater = (LayoutInflater) getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.template_labeled_field, linearLayout, true);
-        TextView title_template_labeled_field_title = linearLayout.findViewById(R.id.title_template_labeled_field_title);
-        FrameLayout title_template_labeled_field_container = linearLayout.findViewById(R.id.title_template_labeled_field_container);
-
-        String title = getValue(group, "value");
-        String input_type = getValue(group, "input_type");
-        title_template_labeled_field_title.setText(title);
-        if (title == null || title.isEmpty())
-            title_template_labeled_field_title.setVisibility(View.GONE);
-
-        /*
-        Button b = new Button(getContext());
-        b.setLayoutParams(
-                new LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.WRAP_CONTENT
-                )
-
-        );
-        */
-
-        View view = null;
-
-        switch(input_type) {
-            case "date_picker":
-                view = getDateButton();
-                break;
-            case "time_picker":
-                view = getTimeButton();
-                break;
-            default:
-                EditText b = new EditText(getContext());
-                b.setText(getValue(group, "default_value"));
-                b.setLayoutParams(
-                        new LayoutParams(
-                                LayoutParams.MATCH_PARENT,
-                                LayoutParams.WRAP_CONTENT
-                        )
-
-                );
-                b.setInputType(inputTypeMask(input_type));
-                view = b;
-            break;
+    @Override
+    public boolean OnChoiceBoxSelected(SurveyResponseRoot source) {
+        boolean result = false;
+        for(SurveyResponseRoot srb: members) {
+            if (srb == source)
+                continue;
+            else
+                if (srb.cordiateState(source))
+                    result = true;
         }
-        /*
-        b.setText("SELECT TIME");
-        b.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new TimePickerFragment();
-                Activity activity = (Activity)getContext();
-                newFragment.show(activity.getFragmentManager(),"TimePicker");
-            }
-        });
-        */
-        title_template_labeled_field_container.addView(view);
-
-
-        layoutTarget.addView(linearLayout);
-
-
-
+        return result;
     }
 
-
-    public View getDateButton() {
-        Button b = new Button(getContext());
-        b.setLayoutParams(
-            new LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.WRAP_CONTENT
-            )
-        );
-
-        b.setText("SELECT DATE");
-        b.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerFragment();
-                Activity activity = (Activity)getContext();
-                newFragment.show(activity.getFragmentManager(),"DatePicker");
-            }
-        });
-
-
-        return b;
+    @Override
+    public JSONObject getParentObject() {
+        return sourceObject;
     }
 
-    public View getTimeButton() {
-        Button b = new Button(getContext());
-        b.setLayoutParams(
-                new LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.WRAP_CONTENT
-                )
-        );
+    @Override
+    public boolean selectedMaxChoices() {
 
-        b.setText("SELECT TIME");
-        b.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new TimePickerFragment();
-                Activity activity = (Activity)getContext();
-                newFragment.show(activity.getFragmentManager(),"TimePicker");
+        int r = getInteger(sourceObject, "max_choices", -1);
+        if (r > 0) {
+            for(SurveyResponseRoot srb: members) {
+                if (srb.toBoolean()) {
+                    r--;
+                }
             }
-        });
+            return r <= 0;
+        }
+        return false;
+    }
 
+    @Override
+    public void valueUpdated(SurveyResponseRoot source,  SurveyResponce responce) {
+        if (responseUpdateInterface != null) {
+            responseUpdateInterface.responceItemUpdated(surveyQuestionView, responce);
+        }
+    }
 
-        return b;
+    @Override
+    public Iterator<SurveyResponseRoot> iterator() {
+        return members.iterator();
     }
 }
-/*
-    "groups": [
-        [
-          { "key":"C.2.1", "type":"radio", "value":"Very satisfied"},
-          { "key":"C.2.2", "type":"radio", "value":"Somewhat satisfied"},
-          { "key":"C.2.3", "type":"radio", "value":"Neither satisfied nor disatisfied"}
-        ],
-        [
-          { "key":"C.2.4", "type":"radio", "value":"Somewhat dissatisfied"},
-          { "key":"C.2.5", "type":"radio", "value":"very dissatisfied"},
-          { "key":"C.2.6", "type":"radio", "value":"other", "input_type":"auto_complete"}
-        ]
-      ]
- */

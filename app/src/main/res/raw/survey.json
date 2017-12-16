@@ -7,11 +7,11 @@
       "questions": [
         {
           "columns":"1",
-          "key":"Q.0",
+          "id":"Q.0",
           "title":"How likely is it that you would recommend this company to a friend or colleague?",
           "choices": [
             {
-              "key":"C.0.1",
+              "id":"C.0.1",
               "type":"range_select",
               "value":"United States",
               "title_left":"ON THE LEFT",
@@ -33,97 +33,157 @@
           ]
         },
         {
-          "key":"Q.1",
+          "id":"Q.1B",
+          "title":"Check applicable symptoms and add additional as needed:",
+          "columns":2,
+          "choices": [
+            {
+              "groups": [
+                [
+                  {
+                    "id": "C.1B.1",
+                    "type": "yes_no",
+                    "value": "Skin"
+                  },
+                  {
+                    "id": "C.1B.2",
+                    "type": "yes_no",
+                    "value": "Eyes"
+                  },
+                  {
+                    "id": "C.1B.3",
+                    "type": "yes_no",
+                    "value": "Constitutional"
+                  },
+                  {
+                    "id": "C.1B.4",
+                    "type": "yes_no",
+                    "value": "Chest/Heart"
+                  }
+                ],
+                [
+                  {
+                    "id": "C.1B.5",
+                    "type": "yes_no",
+                    "value": "Neorological"
+                  },
+                  {
+                    "id": "C.1B.6",
+                    "type": "yes_no",
+                    "value": "Genitourinary"
+                  },
+                  {
+                    "id": "C.1B.7",
+                    "type": "yes_no",
+                    "value": "Throat"
+                  },
+                  {
+                    "id": "C.1B.7",
+                    "type": "yes_no",
+                    "value": "Other",
+                    "input_type": "auto_complete",
+                    "hint": "please provide details"
+                  }
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "id":"Q.1",
           "title":"Select a date from the picker?",
           "choices": [
             {
-              "key":"C.1.1",
+              "id":"C.1.1",
               "type":"text",
               "value":"",
+              "hint":"Select a date",
               "input_type":"date_picker"
             }
           ]
 
         },
         {
-          "key":"Q.2",
+          "id":"Q.2",
           "title":"When were you born?",
           "choices": [
             {
-              "key":"C.1.1",
+              "id":"C.1.1",
               "type":"text",
               "value":"",
-              "input_type":"date",
+              "input_type":"auto_complete",
               "default_value":"2000/01/01"
             }
           ]
 
         },
         {
-          "key":"Q.3",
+          "id":"Q.3",
           "title":"What time did that thing happen?",
           "choices": [
             {
-              "key":"C.1.1",
+              "id":"C.1.1",
               "type":"text",
               "value":"",
+              "hint":"Select a time",
               "input_type":"time_picker"
             }
           ]
 
         },
         {
-          "key":"Q.4",
+          "id":"Q.4",
           "title":"Overall, how satisfied or dissatisfied are you with our company?",
 
           "choices": [
             {
               "groups": [
                 [
-                  { "key":"C.2.1", "type":"radio", "value":"Very satisfied"},
-                  { "key":"C.2.2", "type":"radio", "value":"Somewhat satisfied"},
-                  { "key":"C.2.3", "type":"radio", "value":"Neither satisfied nor disatisfied"}
+                  { "id":"C.2.1", "type":"radio", "value":"Very satisfied"},
+                  { "id":"C.2.2", "type":"radio", "value":"Somewhat satisfied"},
+                  { "id":"C.2.3", "type":"radio", "value":"Neither satisfied nor disatisfied"}
                 ],
                 [
-                  { "key":"C.2.4", "type":"radio", "value":"Somewhat dissatisfied"},
-                  { "key":"C.2.5", "type":"radio", "value":"very dissatisfied"},
-                  { "key":"C.2.6", "type":"radio", "value":"other", "input_type":"auto_complete"}
+                  { "id":"C.2.4", "type":"radio", "value":"Somewhat dissatisfied"},
+                  { "id":"C.2.5", "type":"radio", "value":"very dissatisfied"},
+                  { "id":"C.2.6", "type":"radio", "value":"other", "input_type":"text"}
                 ]
               ]
             }
           ]
         },
         {
-          "key":"Q.5",
-          "title":"Which of the following words would you use to describe our products? Select all that apply.",
+          "id":"Q.5",
+          "title":"Which of the following words would you use to describe our products? Select all that apply. (choose upto 3 items)",
           "columns":2,
+          "max_choices":"3",
           "choices": [
             {
               "groups": [
                 [
-                  { "key":"C.5.1a", "type":"checkbox", "value":"Reliable", "on_select_toggle":"C.5.1b"},
-                  { "key":"C.5.2a", "type":"checkbox", "value":"High quality", "on_select_toggle":"C.5.2b"},
-                  { "key":"C.5.3a", "type":"checkbox", "value":"Useful", "on_select_toggle":"C.5.3b"},
-                  { "key":"C.5.4a", "type":"checkbox", "value":"Unique", "on_select_toggle":"C.5.4b"},
-                  { "key":"C.5.5a", "type":"checkbox", "value":"Good value for the money", "on_select_toggle":"C.5.5b"}
+                  { "id":"C.5.1a", "type":"checkbox", "value":"Reliable", "on_select_toggle":"C.5.1b"},
+                  { "id":"C.5.2a", "type":"checkbox", "value":"High quality", "on_select_toggle":"C.5.2b"},
+                  { "id":"C.5.3a", "type":"checkbox", "value":"Useful", "on_select_toggle":"C.5.3b"},
+                  { "id":"C.5.4a", "type":"checkbox", "value":"Unique", "on_select_toggle":"C.5.4b"},
+                  { "id":"C.5.5a", "type":"checkbox", "value":"Good value for the money", "on_select_toggle":"C.5.5b"}
                 ],
                 [
-                  { "key":"C.5.1b", "type":"checkbox", "value":"Uneliable", "on_select_toggle":"C.5.1a"},
-                  { "key":"C.5.2b", "type":"checkbox", "value":"Low quality", "on_select_toggle":"C.5.2a"},
-                  { "key":"C.5.3b", "type":"checkbox", "value":"Not useful", "on_select_toggle":"C.5.3a"},
-                  { "key":"C.5.4b", "type":"checkbox", "value":"Common", "on_select_toggle":"C.5.4a"},
-                  { "key":"C.5.5b", "type":"checkbox", "value":"Bad value for the money", "on_select_toggle":"C.5.5a"}
+                  { "id":"C.5.1b", "type":"checkbox", "value":"Uneliable", "on_select_toggle":"C.5.1a"},
+                  { "id":"C.5.2b", "type":"checkbox", "value":"Low quality", "on_select_toggle":"C.5.2a"},
+                  { "id":"C.5.3b", "type":"checkbox", "value":"Not useful", "on_select_toggle":"C.5.3a"},
+                  { "id":"C.5.4b", "type":"checkbox", "value":"Common", "on_select_toggle":"C.5.4a"},
+                  { "id":"C.5.5b", "type":"checkbox", "value":"Bad value for the money", "on_select_toggle":"C.5.5a"}
                 ]
               ]
             }
           ]
         },
         {
-          "key":"Q.5",
+          "id":"Q.5",
           "title":"Password field",
           "choices": [
             {
-              "key":"C.1.1",
+              "id":"C.1.1",
               "type":"text",
               "value":"",
               "input_type":"password"
@@ -131,11 +191,11 @@
           ]
         },
         {
-          "key":"Q.6",
+          "id":"Q.6",
           "title":"email field",
           "choices": [
             {
-              "key":"C.1.1",
+              "id":"C.1.1",
               "type":"text",
               "value":"",
               "input_type":"email"
@@ -143,11 +203,11 @@
           ]
         },
         {
-          "key":"Q.7",
+          "id":"Q.7",
           "title":"number field",
           "choices": [
             {
-              "key":"C.1.1",
+              "id":"C.1.1",
               "type":"text",
               "value":"",
               "input_type":"number"
